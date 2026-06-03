@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as DashRouteImport } from './routes/_dash'
 import { Route as DashIndexRouteImport } from './routes/_dash.index'
+import { Route as DashResearchRouteImport } from './routes/_dash.research'
 import { Route as DashPlannerRouteImport } from './routes/_dash.planner'
 import { Route as DashNotesRouteImport } from './routes/_dash.notes'
 import { Route as DashEmailRouteImport } from './routes/_dash.email'
@@ -22,6 +23,11 @@ const DashRoute = DashRouteImport.update({
 const DashIndexRoute = DashIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => DashRoute,
+} as any)
+const DashResearchRoute = DashResearchRouteImport.update({
+  id: '/research',
+  path: '/research',
   getParentRoute: () => DashRoute,
 } as any)
 const DashPlannerRoute = DashPlannerRouteImport.update({
@@ -45,11 +51,13 @@ export interface FileRoutesByFullPath {
   '/email': typeof DashEmailRoute
   '/notes': typeof DashNotesRoute
   '/planner': typeof DashPlannerRoute
+  '/research': typeof DashResearchRoute
 }
 export interface FileRoutesByTo {
   '/email': typeof DashEmailRoute
   '/notes': typeof DashNotesRoute
   '/planner': typeof DashPlannerRoute
+  '/research': typeof DashResearchRoute
   '/': typeof DashIndexRoute
 }
 export interface FileRoutesById {
@@ -58,19 +66,21 @@ export interface FileRoutesById {
   '/_dash/email': typeof DashEmailRoute
   '/_dash/notes': typeof DashNotesRoute
   '/_dash/planner': typeof DashPlannerRoute
+  '/_dash/research': typeof DashResearchRoute
   '/_dash/': typeof DashIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/email' | '/notes' | '/planner'
+  fullPaths: '/' | '/email' | '/notes' | '/planner' | '/research'
   fileRoutesByTo: FileRoutesByTo
-  to: '/email' | '/notes' | '/planner' | '/'
+  to: '/email' | '/notes' | '/planner' | '/research' | '/'
   id:
     | '__root__'
     | '/_dash'
     | '/_dash/email'
     | '/_dash/notes'
     | '/_dash/planner'
+    | '/_dash/research'
     | '/_dash/'
   fileRoutesById: FileRoutesById
 }
@@ -92,6 +102,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof DashIndexRouteImport
+      parentRoute: typeof DashRoute
+    }
+    '/_dash/research': {
+      id: '/_dash/research'
+      path: '/research'
+      fullPath: '/research'
+      preLoaderRoute: typeof DashResearchRouteImport
       parentRoute: typeof DashRoute
     }
     '/_dash/planner': {
@@ -122,6 +139,7 @@ interface DashRouteChildren {
   DashEmailRoute: typeof DashEmailRoute
   DashNotesRoute: typeof DashNotesRoute
   DashPlannerRoute: typeof DashPlannerRoute
+  DashResearchRoute: typeof DashResearchRoute
   DashIndexRoute: typeof DashIndexRoute
 }
 
@@ -129,6 +147,7 @@ const DashRouteChildren: DashRouteChildren = {
   DashEmailRoute: DashEmailRoute,
   DashNotesRoute: DashNotesRoute,
   DashPlannerRoute: DashPlannerRoute,
+  DashResearchRoute: DashResearchRoute,
   DashIndexRoute: DashIndexRoute,
 }
 
