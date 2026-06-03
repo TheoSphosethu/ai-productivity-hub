@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as DashRouteImport } from './routes/_dash'
 import { Route as DashIndexRouteImport } from './routes/_dash.index'
 import { Route as DashResearchRouteImport } from './routes/_dash.research'
@@ -18,6 +19,11 @@ import { Route as DashNotesRouteImport } from './routes/_dash.notes'
 import { Route as DashEmailRouteImport } from './routes/_dash.email'
 import { Route as DashChatRouteImport } from './routes/_dash.chat'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashRoute = DashRouteImport.update({
   id: '/_dash',
   getParentRoute: () => rootRouteImport,
@@ -60,6 +66,7 @@ const DashChatRoute = DashChatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof DashIndexRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/chat': typeof DashChatRoute
   '/email': typeof DashEmailRoute
   '/notes': typeof DashNotesRoute
@@ -68,6 +75,7 @@ export interface FileRoutesByFullPath {
   '/research': typeof DashResearchRoute
 }
 export interface FileRoutesByTo {
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/chat': typeof DashChatRoute
   '/email': typeof DashEmailRoute
   '/notes': typeof DashNotesRoute
@@ -79,6 +87,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_dash': typeof DashRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_dash/chat': typeof DashChatRoute
   '/_dash/email': typeof DashEmailRoute
   '/_dash/notes': typeof DashNotesRoute
@@ -91,6 +100,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/sitemap.xml'
     | '/chat'
     | '/email'
     | '/notes'
@@ -98,10 +108,19 @@ export interface FileRouteTypes {
     | '/prompt'
     | '/research'
   fileRoutesByTo: FileRoutesByTo
-  to: '/chat' | '/email' | '/notes' | '/planner' | '/prompt' | '/research' | '/'
+  to:
+    | '/sitemap.xml'
+    | '/chat'
+    | '/email'
+    | '/notes'
+    | '/planner'
+    | '/prompt'
+    | '/research'
+    | '/'
   id:
     | '__root__'
     | '/_dash'
+    | '/sitemap.xml'
     | '/_dash/chat'
     | '/_dash/email'
     | '/_dash/notes'
@@ -113,10 +132,18 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   DashRoute: typeof DashRouteWithChildren
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_dash': {
       id: '/_dash'
       path: ''
@@ -200,7 +227,18 @@ const DashRouteWithChildren = DashRoute._addFileChildren(DashRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   DashRoute: DashRouteWithChildren,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
