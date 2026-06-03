@@ -47,13 +47,9 @@ export function AiOutput({ content, loading, emptyHint }: AiOutputProps) {
             <p className="text-sm">Generating with AI…</p>
           </div>
         ) : content ? (
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="prose-chat max-w-none text-sm text-foreground/90"
-          >
+          <div className="animate-in fade-in-0 duration-300 prose-chat max-w-none text-sm text-foreground/90">
             <ReactMarkdown>{content}</ReactMarkdown>
-          </motion.div>
+          </div>
         ) : (
           <div className="flex h-full items-center justify-center text-center text-sm text-muted-foreground">
             {emptyHint ?? "Your AI-generated result will appear here."}
