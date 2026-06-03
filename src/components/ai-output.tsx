@@ -1,7 +1,6 @@
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Check, Copy, Loader2, Sparkles } from "lucide-react";
-import { motion } from "motion/react";
 
 import { Button } from "@/components/ui/button";
 
