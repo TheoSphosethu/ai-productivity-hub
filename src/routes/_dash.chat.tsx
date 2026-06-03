@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useEffect } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import ReactMarkdown from "react-markdown";
-import { motion } from "motion/react";
 import { MessageSquare, Send, Loader2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
