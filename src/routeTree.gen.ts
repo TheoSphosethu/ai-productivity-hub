@@ -16,6 +16,7 @@ import { Route as DashPromptRouteImport } from './routes/_dash.prompt'
 import { Route as DashPlannerRouteImport } from './routes/_dash.planner'
 import { Route as DashNotesRouteImport } from './routes/_dash.notes'
 import { Route as DashEmailRouteImport } from './routes/_dash.email'
+import { Route as DashChatRouteImport } from './routes/_dash.chat'
 
 const DashRoute = DashRouteImport.update({
   id: '/_dash',
@@ -51,9 +52,15 @@ const DashEmailRoute = DashEmailRouteImport.update({
   path: '/email',
   getParentRoute: () => DashRoute,
 } as any)
+const DashChatRoute = DashChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
+  getParentRoute: () => DashRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof DashIndexRoute
+  '/chat': typeof DashChatRoute
   '/email': typeof DashEmailRoute
   '/notes': typeof DashNotesRoute
   '/planner': typeof DashPlannerRoute
@@ -61,6 +68,7 @@ export interface FileRoutesByFullPath {
   '/research': typeof DashResearchRoute
 }
 export interface FileRoutesByTo {
+  '/chat': typeof DashChatRoute
   '/email': typeof DashEmailRoute
   '/notes': typeof DashNotesRoute
   '/planner': typeof DashPlannerRoute
@@ -71,6 +79,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_dash': typeof DashRouteWithChildren
+  '/_dash/chat': typeof DashChatRoute
   '/_dash/email': typeof DashEmailRoute
   '/_dash/notes': typeof DashNotesRoute
   '/_dash/planner': typeof DashPlannerRoute
@@ -80,12 +89,20 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/email' | '/notes' | '/planner' | '/prompt' | '/research'
+  fullPaths:
+    | '/'
+    | '/chat'
+    | '/email'
+    | '/notes'
+    | '/planner'
+    | '/prompt'
+    | '/research'
   fileRoutesByTo: FileRoutesByTo
-  to: '/email' | '/notes' | '/planner' | '/prompt' | '/research' | '/'
+  to: '/chat' | '/email' | '/notes' | '/planner' | '/prompt' | '/research' | '/'
   id:
     | '__root__'
     | '/_dash'
+    | '/_dash/chat'
     | '/_dash/email'
     | '/_dash/notes'
     | '/_dash/planner'
@@ -149,10 +166,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashEmailRouteImport
       parentRoute: typeof DashRoute
     }
+    '/_dash/chat': {
+      id: '/_dash/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof DashChatRouteImport
+      parentRoute: typeof DashRoute
+    }
   }
 }
 
 interface DashRouteChildren {
+  DashChatRoute: typeof DashChatRoute
   DashEmailRoute: typeof DashEmailRoute
   DashNotesRoute: typeof DashNotesRoute
   DashPlannerRoute: typeof DashPlannerRoute
@@ -162,6 +187,7 @@ interface DashRouteChildren {
 }
 
 const DashRouteChildren: DashRouteChildren = {
+  DashChatRoute: DashChatRoute,
   DashEmailRoute: DashEmailRoute,
   DashNotesRoute: DashNotesRoute,
   DashPlannerRoute: DashPlannerRoute,
