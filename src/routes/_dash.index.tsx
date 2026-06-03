@@ -1,5 +1,4 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion } from "motion/react";
 import {
   Mail,
   FileText,
@@ -96,13 +95,9 @@ const tools = [
 function Dashboard() {
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 p-4 sm:p-6 lg:p-8">
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="overflow-hidden rounded-2xl bg-gradient-primary p-6 text-primary-foreground shadow-elegant sm:p-8"
-      >
+      <div className="animate-in fade-in-0 slide-in-from-bottom-3 fill-mode-both duration-500 overflow-hidden rounded-2xl bg-gradient-primary p-6 text-primary-foreground shadow-elegant sm:p-8">
         <p className="text-sm font-medium opacity-90">Welcome back 👋</p>
-        <h1 className="mt-1 text-2xl font-bold sm:text-3xl">
+        <h1 className="mt-1 text-2xl font-bold sm:text-3xl text-primary-foreground">
           Your AI Productivity Command Center
         </h1>
         <p className="mt-2 max-w-xl text-sm opacity-90">
@@ -115,16 +110,14 @@ function Dashboard() {
         >
           Start automating <ArrowRight className="h-4 w-4" />
         </Link>
-      </motion.div>
+      </div>
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {stats.map((s, i) => (
-          <motion.div
+          <div
             key={s.label}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.05 }}
-            className="rounded-xl border border-border bg-card p-4 shadow-card"
+            style={{ animationDelay: `${i * 60}ms` }}
+            className="animate-in fade-in-0 slide-in-from-bottom-3 fill-mode-both duration-500 rounded-xl border border-border bg-card p-4 shadow-card"
           >
             <div className="flex items-center justify-between">
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent">
@@ -134,7 +127,7 @@ function Dashboard() {
             </div>
             <p className="mt-3 text-2xl font-bold">{s.value}</p>
             <p className="text-xs text-muted-foreground">{s.label}</p>
-          </motion.div>
+          </div>
         ))}
       </div>
 
@@ -188,28 +181,22 @@ function Dashboard() {
         <h2 className="mb-3 text-lg font-semibold">AI Tools</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {tools.map((t, i) => (
-            <motion.div
+            <Link
               key={t.title}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.04 }}
+              to={t.url}
+              style={{ animationDelay: `${i * 50}ms` }}
+              className="animate-in fade-in-0 slide-in-from-bottom-3 fill-mode-both duration-500 group flex h-full flex-col rounded-xl border border-border bg-card p-5 shadow-card transition hover:-translate-y-0.5 hover:shadow-elegant"
             >
-              <Link
-                to={t.url}
-                className="group flex h-full flex-col rounded-xl border border-border bg-card p-5 shadow-card transition hover:-translate-y-0.5 hover:shadow-elegant"
-              >
-                <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-accent transition group-hover:bg-gradient-primary">
-                  <t.icon className="h-5 w-5 text-accent-foreground transition group-hover:text-primary-foreground" />
-                </div>
-                <h3 className="mt-3 font-semibold">{t.title}</h3>
-                <p className="mt-1 flex-1 text-sm text-muted-foreground">
-                  {t.desc}
-                </p>
-                <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-primary">
-                  Open <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
-                </span>
-              </Link>
-            </motion.div>
+              <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-accent transition group-hover:bg-gradient-primary">
+                <t.icon className="h-5 w-5 text-accent-foreground transition group-hover:text-primary-foreground" />
+              </div>
+              <h3 className="mt-3 font-semibold">{t.title}</h3>
+              <p className="mt-1 flex-1 text-sm text-muted-foreground">{t.desc}</p>
+              <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-primary">
+                Open{" "}
+                <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" />
+              </span>
+            </Link>
           ))}
         </div>
       </div>
