@@ -9,61 +9,226 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as DashRouteImport } from './routes/_dash'
+import { Route as DashIndexRouteImport } from './routes/_dash.index'
+import { Route as DashResearchRouteImport } from './routes/_dash.research'
+import { Route as DashPromptRouteImport } from './routes/_dash.prompt'
+import { Route as DashPlannerRouteImport } from './routes/_dash.planner'
+import { Route as DashNotesRouteImport } from './routes/_dash.notes'
+import { Route as DashEmailRouteImport } from './routes/_dash.email'
+import { Route as DashChatRouteImport } from './routes/_dash.chat'
 
-const IndexRoute = IndexRouteImport.update({
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashRoute = DashRouteImport.update({
+  id: '/_dash',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashIndexRoute = DashIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => DashRoute,
+} as any)
+const DashResearchRoute = DashResearchRouteImport.update({
+  id: '/research',
+  path: '/research',
+  getParentRoute: () => DashRoute,
+} as any)
+const DashPromptRoute = DashPromptRouteImport.update({
+  id: '/prompt',
+  path: '/prompt',
+  getParentRoute: () => DashRoute,
+} as any)
+const DashPlannerRoute = DashPlannerRouteImport.update({
+  id: '/planner',
+  path: '/planner',
+  getParentRoute: () => DashRoute,
+} as any)
+const DashNotesRoute = DashNotesRouteImport.update({
+  id: '/notes',
+  path: '/notes',
+  getParentRoute: () => DashRoute,
+} as any)
+const DashEmailRoute = DashEmailRouteImport.update({
+  id: '/email',
+  path: '/email',
+  getParentRoute: () => DashRoute,
+} as any)
+const DashChatRoute = DashChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
+  getParentRoute: () => DashRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof DashIndexRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/chat': typeof DashChatRoute
+  '/email': typeof DashEmailRoute
+  '/notes': typeof DashNotesRoute
+  '/planner': typeof DashPlannerRoute
+  '/prompt': typeof DashPromptRoute
+  '/research': typeof DashResearchRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/chat': typeof DashChatRoute
+  '/email': typeof DashEmailRoute
+  '/notes': typeof DashNotesRoute
+  '/planner': typeof DashPlannerRoute
+  '/prompt': typeof DashPromptRoute
+  '/research': typeof DashResearchRoute
+  '/': typeof DashIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/_dash': typeof DashRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/_dash/chat': typeof DashChatRoute
+  '/_dash/email': typeof DashEmailRoute
+  '/_dash/notes': typeof DashNotesRoute
+  '/_dash/planner': typeof DashPlannerRoute
+  '/_dash/prompt': typeof DashPromptRoute
+  '/_dash/research': typeof DashResearchRoute
+  '/_dash/': typeof DashIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/sitemap.xml'
+    | '/chat'
+    | '/email'
+    | '/notes'
+    | '/planner'
+    | '/prompt'
+    | '/research'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/sitemap.xml'
+    | '/chat'
+    | '/email'
+    | '/notes'
+    | '/planner'
+    | '/prompt'
+    | '/research'
+    | '/'
+  id:
+    | '__root__'
+    | '/_dash'
+    | '/sitemap.xml'
+    | '/_dash/chat'
+    | '/_dash/email'
+    | '/_dash/notes'
+    | '/_dash/planner'
+    | '/_dash/prompt'
+    | '/_dash/research'
+    | '/_dash/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  DashRoute: typeof DashRouteWithChildren
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dash': {
+      id: '/_dash'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof DashRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dash/': {
+      id: '/_dash/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof DashIndexRouteImport
+      parentRoute: typeof DashRoute
+    }
+    '/_dash/research': {
+      id: '/_dash/research'
+      path: '/research'
+      fullPath: '/research'
+      preLoaderRoute: typeof DashResearchRouteImport
+      parentRoute: typeof DashRoute
+    }
+    '/_dash/prompt': {
+      id: '/_dash/prompt'
+      path: '/prompt'
+      fullPath: '/prompt'
+      preLoaderRoute: typeof DashPromptRouteImport
+      parentRoute: typeof DashRoute
+    }
+    '/_dash/planner': {
+      id: '/_dash/planner'
+      path: '/planner'
+      fullPath: '/planner'
+      preLoaderRoute: typeof DashPlannerRouteImport
+      parentRoute: typeof DashRoute
+    }
+    '/_dash/notes': {
+      id: '/_dash/notes'
+      path: '/notes'
+      fullPath: '/notes'
+      preLoaderRoute: typeof DashNotesRouteImport
+      parentRoute: typeof DashRoute
+    }
+    '/_dash/email': {
+      id: '/_dash/email'
+      path: '/email'
+      fullPath: '/email'
+      preLoaderRoute: typeof DashEmailRouteImport
+      parentRoute: typeof DashRoute
+    }
+    '/_dash/chat': {
+      id: '/_dash/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof DashChatRouteImport
+      parentRoute: typeof DashRoute
     }
   }
 }
 
+interface DashRouteChildren {
+  DashChatRoute: typeof DashChatRoute
+  DashEmailRoute: typeof DashEmailRoute
+  DashNotesRoute: typeof DashNotesRoute
+  DashPlannerRoute: typeof DashPlannerRoute
+  DashPromptRoute: typeof DashPromptRoute
+  DashResearchRoute: typeof DashResearchRoute
+  DashIndexRoute: typeof DashIndexRoute
+}
+
+const DashRouteChildren: DashRouteChildren = {
+  DashChatRoute: DashChatRoute,
+  DashEmailRoute: DashEmailRoute,
+  DashNotesRoute: DashNotesRoute,
+  DashPlannerRoute: DashPlannerRoute,
+  DashPromptRoute: DashPromptRoute,
+  DashResearchRoute: DashResearchRoute,
+  DashIndexRoute: DashIndexRoute,
+}
+
+const DashRouteWithChildren = DashRoute._addFileChildren(DashRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  DashRoute: DashRouteWithChildren,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
