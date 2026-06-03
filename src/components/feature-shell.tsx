@@ -1,6 +1,5 @@
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
-import { motion } from "motion/react";
 
 import { AiDisclaimer } from "@/components/ai-disclaimer";
 
@@ -18,12 +17,7 @@ export function FeatureShell({
   children,
 }: FeatureShellProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className="mx-auto flex w-full max-w-6xl flex-col gap-5 p-4 sm:p-6 lg:p-8"
-    >
+    <div className="animate-in fade-in-0 slide-in-from-bottom-3 fill-mode-both duration-500 mx-auto flex w-full max-w-6xl flex-col gap-5 p-4 sm:p-6 lg:p-8">
       <div className="flex items-start gap-4">
         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-primary shadow-elegant">
           <Icon className="h-6 w-6 text-primary-foreground" />
@@ -35,6 +29,6 @@ export function FeatureShell({
       </div>
       <AiDisclaimer />
       {children}
-    </motion.div>
+    </div>
   );
 }
