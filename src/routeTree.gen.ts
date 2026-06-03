@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as DashRouteImport } from './routes/_dash'
 import { Route as DashIndexRouteImport } from './routes/_dash.index'
+import { Route as DashNotesRouteImport } from './routes/_dash.notes'
 import { Route as DashEmailRouteImport } from './routes/_dash.email'
 
 const DashRoute = DashRouteImport.update({
@@ -22,6 +23,11 @@ const DashIndexRoute = DashIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DashRoute,
 } as any)
+const DashNotesRoute = DashNotesRouteImport.update({
+  id: '/notes',
+  path: '/notes',
+  getParentRoute: () => DashRoute,
+} as any)
 const DashEmailRoute = DashEmailRouteImport.update({
   id: '/email',
   path: '/email',
@@ -31,23 +37,26 @@ const DashEmailRoute = DashEmailRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof DashIndexRoute
   '/email': typeof DashEmailRoute
+  '/notes': typeof DashNotesRoute
 }
 export interface FileRoutesByTo {
   '/email': typeof DashEmailRoute
+  '/notes': typeof DashNotesRoute
   '/': typeof DashIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_dash': typeof DashRouteWithChildren
   '/_dash/email': typeof DashEmailRoute
+  '/_dash/notes': typeof DashNotesRoute
   '/_dash/': typeof DashIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/email'
+  fullPaths: '/' | '/email' | '/notes'
   fileRoutesByTo: FileRoutesByTo
-  to: '/email' | '/'
-  id: '__root__' | '/_dash' | '/_dash/email' | '/_dash/'
+  to: '/email' | '/notes' | '/'
+  id: '__root__' | '/_dash' | '/_dash/email' | '/_dash/notes' | '/_dash/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -70,6 +79,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashIndexRouteImport
       parentRoute: typeof DashRoute
     }
+    '/_dash/notes': {
+      id: '/_dash/notes'
+      path: '/notes'
+      fullPath: '/notes'
+      preLoaderRoute: typeof DashNotesRouteImport
+      parentRoute: typeof DashRoute
+    }
     '/_dash/email': {
       id: '/_dash/email'
       path: '/email'
@@ -82,11 +98,13 @@ declare module '@tanstack/react-router' {
 
 interface DashRouteChildren {
   DashEmailRoute: typeof DashEmailRoute
+  DashNotesRoute: typeof DashNotesRoute
   DashIndexRoute: typeof DashIndexRoute
 }
 
 const DashRouteChildren: DashRouteChildren = {
   DashEmailRoute: DashEmailRoute,
+  DashNotesRoute: DashNotesRoute,
   DashIndexRoute: DashIndexRoute,
 }
 
